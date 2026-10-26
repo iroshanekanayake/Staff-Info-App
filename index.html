@@ -6,7 +6,7 @@
     <title>Employee Size & Information Form</title>
     <!-- App installable settings -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#4f46e5">
     <link rel="apple-touch-icon" href="icon.png">
     
     <!-- html2pdf Library -->
@@ -17,101 +17,147 @@
             font-family: 'Segoe UI', Arial, sans-serif;
         }
         body {
-            background-color: #f1f5f9;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
             margin: 0;
-            padding: 15px;
+            padding: 20px;
             color: #333;
+            min-height: 100vh;
         }
         .container {
             max-width: 600px;
             background: #ffffff;
             margin: 0 auto;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         h2 {
             text-align: center;
-            color: #1e293b;
-            font-size: 20px;
-            margin-bottom: 20px;
+            color: #4f46e5;
+            font-size: 22px;
+            margin-bottom: 22px;
+            font-weight: 700;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
-            color: #475569;
-            font-size: 14px;
+            color: #4b5563;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         input, select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
             font-size: 14px;
+            background-color: #f9fafb;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus {
+            border-color: #6366f1;
             background-color: #fff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
         input[readonly] {
-            background-color: #f8fafc;
-            color: #475569;
+            background-color: #f3f4f6;
+            color: #374151;
         }
         .btn-add {
             width: 100%;
-            background-color: #2563eb;
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
             color: white;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
-        .btn-add:hover { background-color: #1d4ed8; }
+        .btn-add:hover { opacity: 0.9; }
         
         .btn-pdf {
             width: 100%;
-            background-color: #10b981;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             color: white;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
-        .btn-pdf:hover { background-color: #059669; }
+        .btn-pdf:hover { opacity: 0.9; }
 
         .btn-clear {
             width: 100%;
-            background-color: #ef4444;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
             color: white;
             padding: 10px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
         }
-        .btn-clear:hover { background-color: #dc2626; }
+        .btn-clear:hover { opacity: 0.9; }
 
         .preview-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 11px;
+            margin-top: 25px;
+            font-size: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px #e5e7eb;
         }
         .preview-table th, .preview-table td {
-            border: 1px solid #cbd5e1;
-            padding: 6px;
+            border: 1px solid #e5e7eb;
+            padding: 8px;
             text-align: center;
         }
-        .preview-table th { background-color: #f1f5f9; }
+        .preview-table th { 
+            background-color: #4f46e5; 
+            color: white;
+            font-weight: 600;
+        }
+        .preview-table tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .action-btn-edit {
+            background-color: #f59e0b;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 3px;
+        }
+        .action-btn-del {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
 
         /* PDF Layout (Strict A4 Layout) */
         #pdf-wrapper {
@@ -144,7 +190,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            font-size: 11px;
+            font-size: 12px;
         }
         .pdf-table th, .pdf-table td {
             border: 1px solid #000;
@@ -204,16 +250,6 @@
     </div>
 
     <div class="form-group">
-        <label for="empId">ID Number:</label>
-        <input type="text" id="empId" placeholder="Enter ID number manually">
-    </div>
-
-    <div class="form-group">
-        <label for="empMobile">Mobile Number:</label>
-        <input type="tel" id="empMobile" placeholder="Enter mobile number manually">
-    </div>
-
-    <div class="form-group">
         <label for="tshirtSize">T-Shirt Size:</label>
         <select id="tshirtSize">
             <option value="S">S (Small)</option>
@@ -247,8 +283,6 @@
             <tr>
                 <th>No</th>
                 <th>Full Name</th>
-                <th>ID Number</th>
-                <th>Mobile</th>
                 <th>T-Shirt</th>
                 <th>Shoe</th>
                 <th>Action</th>
@@ -257,8 +291,8 @@
         <tbody></tbody>
     </table>
 
-    <button type="button" class="btn-pdf" onclick="generatePDF()">Download PDF Report</button>
-    <button type="button" class="btn-clear" onclick="clearAllData()">Clear List (Reset)</button>
+    <button type="button" class="btn-pdf" onclick="generatePDF()">📥 Download PDF Report</button>
+    <button type="button" class="btn-clear" onclick="clearAllData()">🗑️ Clear List (Reset)</button>
 </div>
 
 <!-- Hidden PDF Template -->
@@ -271,19 +305,15 @@
         
         <div style="font-size: 13px; line-height: 1.4;">
             <p><strong>Date:</strong> <span id="lblDate"></span></p>
-            <p>The Manager,<br>Lion Brewery Ceylon PLC,<br>Biyagama.</p>
-            <p>Dear Sir,</p>
             <p>Below mentioned employees are working under Winwil Co.(PVT) Ltd.</p>
             
             <table class="pdf-table">
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No</th>
-                        <th style="width: 32%;">Full Name</th>
-                        <th style="width: 20%;">ID Number</th>
-                        <th style="width: 18%;">Mobile Number</th>
-                        <th style="width: 11%;">T-Shirt</th>
-                        <th style="width: 11%;">Shoe</th>
+                        <th style="width: 10%;">No</th>
+                        <th style="width: 50%;">Full Name</th>
+                        <th style="width: 20%;">T-Shirt</th>
+                        <th style="width: 20%;">Shoe</th>
                     </tr>
                 </thead>
                 <tbody id="pdfTableBody"></tbody>
@@ -297,13 +327,11 @@
 
 <script>
     let employeeData = [];
-    let editingIndex = -1; // Tracks if we are editing an existing record
+    let editingIndex = -1;
 
     function handleEmployeeChange() {
         const select = document.getElementById('empSelect');
         const empNameInput = document.getElementById('empName');
-        const empIdInput = document.getElementById('empId');
-        const empMobileInput = document.getElementById('empMobile');
 
         if (select.value === 'NEW') {
             empNameInput.value = '';
@@ -322,7 +350,7 @@
 
     // Load saved data from LocalStorage on page load
     window.onload = function() {
-        const savedData = localStorage.getItem('employeeSizeData');
+        const savedData = localStorage.getItem('employeeSizeDataNoID');
         if (savedData) {
             employeeData = JSON.parse(savedData);
             updatePreviewTable();
@@ -331,29 +359,23 @@
 
     function addRow() {
         const empName = document.getElementById('empName').value.trim();
-        const empId = document.getElementById('empId').value.trim();
-        const empMobile = document.getElementById('empMobile').value.trim();
         const tshirtSize = document.getElementById('tshirtSize').value;
         const shoeSize = document.getElementById('shoeSize').value;
 
-        if (!empName || !empId || !empMobile) {
-            alert('Please fill in all fields (Name, ID Number, Mobile Number)!');
+        if (!empName) {
+            alert('Please select or enter employee name!');
             return;
         }
 
         if (editingIndex === -1) {
-            // Add new record
-            employeeData.push({ empName, empId, empMobile, tshirtSize, shoeSize });
+            employeeData.push({ empName, tshirtSize, shoeSize });
         } else {
-            // Update existing record
-            employeeData[editingIndex] = { empName, empId, empMobile, tshirtSize, shoeSize };
+            employeeData[editingIndex] = { empName, tshirtSize, shoeSize };
             editingIndex = -1;
             document.getElementById('addBtn').innerText = 'Add to List';
         }
 
-        // Save to browser LocalStorage automatically
-        localStorage.setItem('employeeSizeData', JSON.stringify(employeeData));
-
+        localStorage.setItem('employeeSizeDataNoID', JSON.stringify(employeeData));
         updatePreviewTable();
         resetForm();
     }
@@ -363,8 +385,6 @@
         document.getElementById('empName').value = '';
         document.getElementById('empName').readOnly = false;
         document.getElementById('empName').placeholder = 'Select from list or type new name';
-        document.getElementById('empId').value = '';
-        document.getElementById('empMobile').value = '';
         document.getElementById('tshirtSize').value = 'S';
         document.getElementById('shoeSize').value = '38';
         editingIndex = -1;
@@ -379,13 +399,11 @@
             const row = `<tr>
                 <td>${index + 1}</td>
                 <td>${item.empName}</td>
-                <td>${item.empId}</td>
-                <td>${item.empMobile}</td>
                 <td>${item.tshirtSize}</td>
                 <td>${item.shoeSize}</td>
                 <td>
-                    <button type="button" onclick="editRecord(${index})" style="background:#f59e0b; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; font-size:10px; margin-right:2px;">Edit</button>
-                    <button type="button" onclick="deleteRecord(${index})" style="background:#ef4444; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; font-size:10px;">Del</button>
+                    <button type="button" class="action-btn-edit" onclick="editRecord(${index})">Edit</button>
+                    <button type="button" class="action-btn-del" onclick="deleteRecord(${index})">Del</button>
                 </td>
             </tr>`;
             tbody.innerHTML += row;
@@ -396,7 +414,6 @@
         const item = employeeData[index];
         editingIndex = index;
 
-        // Check if name is in dropdown list
         const select = document.getElementById('empSelect');
         let found = false;
         for (let opt of select.options) {
@@ -416,8 +433,6 @@
         }
 
         empNameInput.value = item.empName;
-        document.getElementById('empId').value = item.empId;
-        document.getElementById('empMobile').value = item.empMobile;
         document.getElementById('tshirtSize').value = item.tshirtSize;
         document.getElementById('shoeSize').value = item.shoeSize;
 
@@ -428,7 +443,7 @@
     function deleteRecord(index) {
         if (confirm('Are you sure you want to delete this record?')) {
             employeeData.splice(index, 1);
-            localStorage.setItem('employeeSizeData', JSON.stringify(employeeData));
+            localStorage.setItem('employeeSizeDataNoID', JSON.stringify(employeeData));
             updatePreviewTable();
             if (editingIndex === index) {
                 resetForm();
@@ -438,11 +453,10 @@
         }
     }
 
-    // Clear all saved data
     function clearAllData() {
         if (confirm('Are you sure you want to clear all saved records?')) {
             employeeData = [];
-            localStorage.removeItem('employeeSizeData');
+            localStorage.removeItem('employeeSizeDataNoID');
             updatePreviewTable();
             resetForm();
         }
@@ -463,8 +477,6 @@
             const row = `<tr>
                 <td>${String(index + 1).padStart(2, '0')}</td>
                 <td>${item.empName}</td>
-                <td>${item.empId}</td>
-                <td>${item.empMobile}</td>
                 <td>${item.tshirtSize}</td>
                 <td>${item.shoeSize}</td>
             </tr>`;
@@ -500,3 +512,4 @@
 
 </body>
 </html>
+
