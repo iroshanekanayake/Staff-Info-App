@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Size & Information Form</title>
+    <!-- App installable settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="apple-touch-icon" href="icon.png">
+    
+    <!-- html2pdf Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            background: #ffffff;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #1e293b;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #475569;
+            font-size: 14px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #fff;
+        }
+        .btn-add {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-add:hover { background-color: #1d4ed8; }
+        
+        .btn-pdf {
+            width: 100%;
+            background-color: #10b981;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .btn-pdf:hover { background-color: #059669; }
+
+        .btn-clear {
+            width: 100%;
+            background-color: #ef4444;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-clear:hover { background-color: #dc2626; }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 11px;
+        }
+        .preview-table th, .preview-table td {
+            border: 1px solid #cbd5e1;
+            padding: 6px;
+            text-align: center;
+        }
+        .preview-table th { background-color: #f1f5f9; }
+
+        /* PDF Layout (Strict A4 Layout) */
+        #pdf-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+        }
+        #pdf-template {
+            width: 190mm; /* A4 printable width */
+            background: white;
+            padding: 10mm;
+            font-family: Arial, sans-serif;
+            color: #000;
+        }
+        .company-header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .company-header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .company-header p {
+            margin: 3px 0 0 0;
+            font-size: 12px;
+        }
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 11px;
+        }
+        .pdf-table th, .pdf-table td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: center;
+        }
+        .pdf-table th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Employee Size & Info Form</h2>
+    
+    <div class="form-group">
+        <label for="empSelect">Select Employee:</label>
+        <select id="empSelect" onchange="handleEmployeeChange()">
+            <option value="">-- Select Employee --</option>
+            <option value="K.B.N. Pradeep Kumara|751342624V">K.B.N. Pradeep Kumara</option>
+            <option value="P. D. Nandana Udayakumara|851440038V">P. D. Nandana Udayakumara</option>
+            <option value="K.W. Krishantha Mendis Perera|803223041V">K.W. Krishantha Mendis Perera</option>
+            <option value="S.M.V.G. Chandana Sandaruwan Thilakarathna|913520289V">S.M.V.G. Chandana Sandaruwan Thilakarathna</option>
+            <option value="K.P. Thilina Madushan|993090735V">K.P. Thilina Madushan</option>
+            <option value="H.H. Danushka Darmasiri|802731949V">H.H. Danushka Darmasiri</option>
+            <option value="K.A.D. Sachin Kavindu Athukorala|972472280V">K.A.D. Sachin Kavindu Athukorala</option>
+            <option value="E.S.K.M. Eroshan Ekanayake|883232968V">E.S.K.M. Eroshan Ekanayake</option>
+            <option value="P.K. Shehan Madusanka Jayakody|20010690276">P.K. Shehan Madusanka Jayakody</option>
+            <option value="S. Akila Dewinda|198710202429">S. Akila Dewinda</option>
+            <option value="D.N.G. Padmasiri|670153070V">D.N.G. Padmasiri</option>
+            <option value="G.M. Vimukthi Wijewardana|199830610563">G.M. Vimukthi Wijewardana</option>
+            <option value="W.M. Akila Nuwan Weerakoon|951961280V">W.M. Akila Nuwan Weerakoon</option>
+            <option value="V. Rathsara Loku Gamage|20001420203">V. Rathsara Loku Gamage</option>
+            <option value="M.K.D. Senaka Gayan|862110161V">M.K.D. Senaka Gayan</option>
+            <option value="K.A. Chathuranga Jayanath|872921745V">K.A. Chathuranga Jayanath</option>
+            <option value="G.G. Lahiru Danushka Dayarathna|931431722V">G.G. Lahiru Danushka Dayarathna</option>
+            <option value="P.K.P. Chaminda Rathnalanka|19762850329">P.K.P. Chaminda Rathnalanka</option>
+            <option value="L.D.P. Prasanna Kumara|197616001300">L.D.P. Prasanna Kumara</option>
+            <option value="K.M. Vasantha Kumara|8014323361V">K.M. Vasantha Kumara</option>
+            <option value="R. Hasindu Gimantha|990721173V">R. Hasindu Gimantha</option>
+            <option value="W.A. Mauli Wanasundara|930212962V">W.A. Mauli Wanasundara</option>
+            <option value="S.A. Isuru Manushantha|20010440263">S.A. Isuru Manushantha</option>
+            <option value="Janindu Sooriyabandara|20050680072">Janindu Sooriyabandara</option>
+            <option value="Charles Reginold Laliyat|722301382V">Charles Reginold Laliyat</option>
+            <option value="A.M. Damith Wasantha Kumara|19882380477">A.M. Damith Wasantha Kumara</option>
+            <option value="G. Kasun Wickramarathna|961842751V">G. Kasun Wickramarathna</option>
+            <option value="R.D. Sanjeewa Newil Rajapaksha|793572778V">R.D. Sanjeewa Newil Rajapaksha</option>
+            <option value="R.M.A. Ajith Indralal Rajathewa|681890289V">R.M.A. Ajith Indralal Rajathewa</option>
+            <option value="A.M.M.G. Eranga Madushan Thilaka|20023070381">A.M.M.G. Eranga Madushan Thilaka</option>
+            <option value="N.D.P. Janith Sachintha Kumara|962352278V">N.D.P. Janith Sachintha Kumara</option>
+            <option value="NEW">-- Add New Employee --</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="customNameGroup" style="display: none;">
+        <label for="empName">Full Name:</label>
+        <input type="text" id="empName" placeholder="Enter employee full name">
+    </div>
+
+    <div class="form-group">
+        <label for="empId">ID Number:</label>
+        <input type="text" id="empId" placeholder="Enter ID number">
+    </div>
+
+    <div class="form-group">
+        <label for="empMobile">Mobile Number:</label>
+        <input type="tel" id="empMobile" placeholder="07X XXXXXXX">
+    </div>
+
+    <div class="form-group">
+        <label for="tshirtSize">T-Shirt Size:</label>
+        <select id="tshirtSize">
+            <option value="S">S (Small)</option>
+            <option value="M">M (Medium)</option>
+            <option value="L">L (Large)</option>
+            <option value="XL">XL (Extra Large)</option>
+            <option value="XXL">XXL</option>
+            <option value="XXXL">XXXL</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="shoeSize">Shoe Size:</label>
+        <select id="shoeSize">
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+        </select>
+    </div>
+
+    <button type="button" class="btn-add" onclick="addRow()">Add to List</button>
+
+    <!-- Preview Table -->
+    <table class="preview-table" id="previewTable">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Full Name</th>
+                <th>ID Number</th>
+                <th>Mobile</th>
+                <th>T-Shirt</th>
+                <th>Shoe</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button type="button" class="btn-pdf" onclick="generatePDF()">Download PDF Report</button>
+    <button type="button" class="btn-clear" onclick="clearAllData()">Clear List (Reset)</button>
+</div>
+
+<!-- Hidden PDF Template -->
+<div id="pdf-wrapper">
+    <div id="pdf-template">
+        <div class="company-header">
+            <h1>WINWIL COMPANY (PVT) LTD</h1>
+            <p>Employee Size & Information Report</p>
+        </div>
+        
+        <div style="font-size: 13px; line-height: 1.4;">
+            <p><strong>Date:</strong> <span id="lblDate"></span></p>
+            <p>The Manager,<br>Lion Brewery Ceylon PLC,<br>Biyagama.</p>
+            <p>Dear Sir,</p>
+            <p>Below mentioned employees are working under Winwil Co.(PVT) Ltd.</p>
+            
+            <table class="pdf-table">
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No</th>
+                        <th style="width: 32%;">Full Name</th>
+                        <th style="width: 20%;">ID Number</th>
+                        <th style="width: 18%;">Mobile Number</th>
+                        <th style="width: 11%;">T-Shirt</th>
+                        <th style="width: 11%;">Shoe</th>
+                    </tr>
+                </thead>
+                <tbody id="pdfTableBody"></tbody>
+            </table>
+            
+            <p style="margin-top: 30px;">Thank You,</p>
+            <p style="margin-top: 25px;">..................................................<br>Authorized Signature</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    let employeeData = [];
+
+    function handleEmployeeChange() {
+        const select = document.getElementById('empSelect');
+        const customNameGroup = document.getElementById('customNameGroup');
+        const empNameInput = document.getElementById('empName');
+        const empIdInput = document.getElementById('empId');
+
+        if (select.value === 'NEW') {
+            customNameGroup.style.display = 'block';
+            empNameInput.value = '';
+            empIdInput.value = '';
+        } else if (select.value !== '') {
+            customNameGroup.style.display = 'none';
+            const parts = select.value.split('|');
+            empNameInput.value = parts[0];
+            empIdInput.value = parts[1];
+        } else {
+            customNameGroup.style.display = 'none';
+            empNameInput.value = '';
+            empIdInput.value = '';
+        }
+    }
+
+    // Load saved data from LocalStorage on page load
+    window.onload = function() {
+        const savedData = localStorage.getItem('employeeSizeData');
+        if (savedData) {
+            employeeData = JSON.parse(savedData);
+            updatePreviewTable();
+        }
+    };
+
+    function addRow() {
+        const empName = document.getElementById('empName').value.trim();
+        const empId = document.getElementById('empId').value.trim();
+        const empMobile = document.getElementById('empMobile').value.trim();
+        const tshirtSize = document.getElementById('tshirtSize').value;
+        const shoeSize = document.getElementById('shoeSize').value;
+
+        if (!empName || !empId || !empMobile) {
+            alert('Please fill in all required fields!');
+            return;
+        }
+
+        employeeData.push({ empName, empId, empMobile, tshirtSize, shoeSize });
+
+        // Save to browser LocalStorage automatically
+        localStorage.setItem('employeeSizeData', JSON.stringify(employeeData));
+
+        updatePreviewTable();
+
+        // Form reset inputs
+        document.getElementById('empSelect').value = '';
+        document.getElementById('customNameGroup').style.display = 'none';
+        document.getElementById('empName').value = '';
+        document.getElementById('empId').value = '';
+        document.getElementById('empMobile').value = '';
+        document.getElementById('tshirtSize').value = 'S';
+        document.getElementById('shoeSize').value = '38';
+    }
+
+    function updatePreviewTable() {
+        const tbody = document.getElementById('previewTable').querySelector('tbody');
+        tbody.innerHTML = '';
+        
+        employeeData.forEach((item, index) => {
+            const row = `<tr>
+                <td>${index + 1}</td>
+                <td>${item.empName}</td>
+                <td>${item.empId}</td>
+                <td>${item.empMobile}</td>
+                <td>${item.tshirtSize}</td>
+                <td>${item.shoeSize}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    // Clear all saved data
+    function clearAllData() {
+        if (confirm('Are you sure you want to clear all saved records?')) {
+            employeeData = [];
+            localStorage.removeItem('employeeSizeData');
+            updatePreviewTable();
+        }
+    }
+
+    function generatePDF() {
+        if (employeeData.length === 0) {
+            alert('Please add at least one employee record!');
+            return;
+        }
+
+        document.getElementById('lblDate').innerText = new Date().toISOString().split('T')[0];
+
+        const pdfTbody = document.getElementById('pdfTableBody');
+        pdfTbody.innerHTML = '';
+
+        employeeData.forEach((item, index) => {
+            const row = `<tr>
+                <td>${String(index + 1).padStart(2, '0')}</td>
+                <td>${item.empName}</td>
+                <td>${item.empId}</td>
+                <td>${item.empMobile}</td>
+                <td>${item.tshirtSize}</td>
+                <td>${item.shoeSize}</td>
+            </tr>`;
+            pdfTbody.innerHTML += row;
+        });
+
+        const element = document.getElementById('pdf-template');
+
+        const options = {
+            margin:       [10, 10, 10, 10],
+            filename:     'Employee_Size_Report.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().from(element).set(options).save();
+    }
+</script>
+
+<!-- Service Worker Registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('./sw.js').then(function(registration) {
+        console.log('ServiceWorker registration successful');
+      }, function(err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
+
